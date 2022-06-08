@@ -20,20 +20,20 @@ def update_user(id: int,user,cur_user):
                 check_bool = databaseHelper.role_power(user.working_under)
                 if check_bool == 'Supervisor':
                     databaseHelper.update_user(user,id)
-                    return HTTPException(status_code = HTTPStatus.CREATED, detail = logError.USER_ADDED_SUCCESSFULLY)
+                    return HTTPException(status_code = HTTPStatus.CREATED, detail = logError.UPDATED_USER_SUCCESSFULLY)
                 else:
                     return HTTPException(status_code = HTTPStatus.FORBIDDEN, detail = logError.WORKING_UNDER_IS_NOT_A_SUPERVISOR)
             elif user.role_id == 2:
                 check_bool = databaseHelper.role_power(user.working_under)
                 if check_bool == 'Admin':
                     databaseHelper.update_user(user,id)
-                    return HTTPException(status_code = HTTPStatus.CREATED, detail = logError.USER_ADDED_SUCCESSFULLY)
+                    return HTTPException(status_code = HTTPStatus.CREATED, detail = logError.UPDATED_USER_SUCCESSFULLY)
                 else:
                     return HTTPException(status_code = HTTPStatus.FORBIDDEN, detail = logError.WORKING_UNDER_IS_NOT_A_ADMIN)
             elif user.role_id == 1:
                 user.working_under = cur_user.id
                 databaseHelper.update_user(user,id)
-                return HTTPException(status_code = HTTPStatus.CREATED, detail = logError.USER_ADDED_SUCCESSFULLY)
+                return HTTPException(status_code = HTTPStatus.CREATED, detail = logError.UPDATED_USER_SUCCESSFULLY)
         else:
             raise HTTPException(status_code = HTTPStatus.BAD_REQUEST, detail = logError.INVALID_ROLE_ERROR)
     elif role == 'Admin':
@@ -44,14 +44,14 @@ def update_user(id: int,user,cur_user):
                         check_bool = databaseHelper.role_power(user.working_under)
                         if check_bool == 'Admin':
                             databaseHelper.update_user(user,id)
-                            return HTTPException(status_code = HTTPStatus.CREATED, detail = logError.USER_ADDED_SUCCESSFULLY)
+                            return HTTPException(status_code = HTTPStatus.CREATED, detail = logError.UPDATED_USER_SUCCESSFULLY)
                         else:
                             return HTTPException(status_code = HTTPStatus.FORBIDDEN, detail = logError.WORKING_UNDER_IS_NOT_A_ADMIN)
                     elif user.role_id == 3:
                         check_bool = databaseHelper.role_power(user.working_under)
                         if check_bool == 'Supervisor':
                             databaseHelper.update_user(user,id)
-                            return HTTPException(status_code = HTTPStatus.CREATED, detail = logError.USER_ADDED_SUCCESSFULLY)
+                            return HTTPException(status_code = HTTPStatus.CREATED, detail = logError.UPDATED_USER_SUCCESSFULLY)
                         else:
                             return HTTPException(status_code = HTTPStatus.FORBIDDEN, detail = logError.WORKING_UNDER_IS_NOT_A_SUPERVISOR)              
                 else:
@@ -67,7 +67,7 @@ def update_user(id: int,user,cur_user):
                     check_bool = databaseHelper.role_power(user.working_under)
                     if check_bool == 'Supervisor':
                         databaseHelper.update_user(user,id)
-                        return HTTPException(status_code = HTTPStatus.CREATED, detail = logError.USER_ADDED_SUCCESSFULLY)
+                        return HTTPException(status_code = HTTPStatus.CREATED, detail = logError.UPDATED_USER_SUCCESSFULLY)
                     else:
                         return HTTPException(status_code = HTTPStatus.FORBIDDEN, detail = logError.WORKING_UNDER_IS_NOT_A_SUPERVISOR)
                 else:
