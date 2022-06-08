@@ -3,8 +3,11 @@ from routes.login import login
 from routes.users import userRoutes
 from routes.company import companyRoutes
 from routes.resetPassword import resetPass
+from helpers import only_execute_once
 
 app = FastAPI()
+
+only_execute_once.initial_setup()
 
 @app.get('/')
 def index():
