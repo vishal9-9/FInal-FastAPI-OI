@@ -4,13 +4,15 @@ from fastapi import HTTPException
 from config import logError
 
 def update_user(id: int,user,cur_user):
+    role = databaseHelper.role_power(cur_user.id)
+    if role == 'User':
+        raise HTTPException(status_code = HTTPStatus.UNAUTHORIZED, detail = logError.USER_IS_UNAUTHORISED)
     email_already_present = databaseHelper.update_email_check(id)
     if user.email in email_already_present:
         raise HTTPException(status_code = HTTPStatus.CONFLICT, detail = logError.EMAIL_FOUND)
     company_id = databaseHelper.list_of_cid()
     if user.c_id not in company_id:
         raise HTTPException(status_code = HTTPStatus.BAD_REQUEST, detail = logError.COMPANY_NOT_FOUND)
-    role = databaseHelper.role_power(cur_user.id)
     user_toupdate = databaseHelper.list_user_id(id)
     if not user_toupdate:
         raise HTTPException(status_code = HTTPStatus.NOT_FOUND, detail = logError.USER_NOT_FOUND)

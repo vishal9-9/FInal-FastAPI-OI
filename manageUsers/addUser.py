@@ -4,6 +4,9 @@ from fastapi import HTTPException
 from config import logError
 
 def add_user(user,cur_user):
+    role = databaseHelper.role_power(cur_user.id)
+    if role == 'User':
+        raise HTTPException(status_code = HTTPStatus.UNAUTHORIZED, detail = logError.USER_IS_UNAUTHORISED)
     already_exist = databaseHelper.if_user_exist(user.email)
     if already_exist:
         raise HTTPException(status_code = HTTPStatus.CONFLICT, detail = logError.USER_IS_ALREADY_REGISTERED_WITH_US)
@@ -11,7 +14,6 @@ def add_user(user,cur_user):
     if user.c_id not in company_id:
         raise HTTPException(status_code = HTTPStatus.BAD_REQUEST, detail = logError.COMPANY_NOT_FOUND)
     check_workingUnder = databaseHelper.role_power(user.working_under)
-    role = databaseHelper.role_power(cur_user.id)
     if role == 'Superadmin':
         if user.role_id in [1,2,3]:
             if user.role_id == 3:

@@ -26,7 +26,7 @@ def role_power(user_id: int):
 def add_new_user(user_schema):
     salt = bcrypt.gensalt()
     password = user_schema.password
-    new_user = models.Users(c_id = user_schema.c_id,fullname = user_schema.fullname,email = user_schema.email,password = passhash.genrate_hash_password(password.encode('utf-8'),salt),salt = salt,contact_no = user_schema.contact_no, working_under = user_schema.working_under, dob = user_schema.dob, isactive = 1 , role_id = user_schema.role_id,created_at = datetime.datetime.now())
+    new_user = models.Users(c_id = user_schema.c_id,fullname = user_schema.fullname,email = user_schema.email,password = passhash.genrate_hash_password(password,salt).decode(),salt = salt,contact_no = user_schema.contact_no, working_under = user_schema.working_under, dob = user_schema.dob, isactive = 1 , role_id = user_schema.role_id,created_at = datetime.datetime.now())
     db.add(new_user)
     db.commit()
     db.close()
@@ -143,8 +143,9 @@ def delete_compnany(id: int):
 
 def reset_pass(new_password,email):
     salt = bcrypt.gensalt()
-    newpass = new_password.encode('utf-8')
-    h_pass = passhash.genrate_hash_password(newpass,salt)
+    newpass = new_password
+    h_pass = passhash.genrate_hash_password(newpass,salt).decode('utf-8')
+    salt = salt.decode('utf-8')
     query = f'update users set password = "{h_pass}", salt = "{salt}" where email = "{email[0]}"'
     db.execute(query)
     db.commit()
